@@ -4,12 +4,15 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
 
+import { OrdersComponent } from '../components/orders/orders';
 
 import { HomePage } from '../pages/home/home'
 import { LoginPage } from '../pages/login/login'
 import { RegisterPage } from '../pages/register/register'
 import { SellerDashboardPage } from '../pages/seller-dashboard/seller-dashboard'
 import { CustomerDashboardPage } from '../pages/customer-dashboard/customer-dashboard'
+import { StorePage } from '../pages/store/store'
+import { ThankyouPage }from '../pages/thankyou/thankyou'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,7 +33,10 @@ import { AuthProvider } from '../providers/auth/auth';
     LoginPage,
     RegisterPage,
     SellerDashboardPage,
-    CustomerDashboardPage
+    CustomerDashboardPage,
+    OrdersComponent,
+    StorePage,
+    ThankyouPage
   ],
   imports: [
     BrowserModule,
@@ -45,17 +51,19 @@ import { AuthProvider } from '../providers/auth/auth';
     LoginPage,
     RegisterPage,
     SellerDashboardPage,
-    CustomerDashboardPage
+    CustomerDashboardPage,
+    StorePage,
+    ThankyouPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatabaseProvider,
-    // {provide: SQLite, useClass: SQLiteMock},
-    // {provide: SQLitePorter, useClass: SQLitePorterMock },
-    SQLite,
-    SQLitePorter,
+    {provide: SQLite, useClass: SQLiteMock},
+    {provide: SQLitePorter, useClass: SQLitePorterMock },
+    // SQLite,
+    // SQLitePorter,
     AuthProvider
   ]
 })

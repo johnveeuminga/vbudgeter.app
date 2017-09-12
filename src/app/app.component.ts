@@ -3,6 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
 import { HomePage } from '../pages/home/home';
+import { SellerDashboardPage } from '../pages/seller-dashboard/seller-dashboard';
+import { CustomerDashboardPage } from '../pages/customer-dashboard/customer-dashboard';
+import { ThankyouPage }  from '../pages/thankyou/thankyou'
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 

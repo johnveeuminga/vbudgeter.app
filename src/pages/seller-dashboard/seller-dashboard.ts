@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, ActionSheetController } from 'ioni
 import { AuthProvider } from '../../providers/auth/auth'
 
 import { HomePage } from '../home/home'
+
+import { OrdersComponent } from '../../components/orders/orders'
 /**
  * Generated class for the SellerDashboardPage page.
  *

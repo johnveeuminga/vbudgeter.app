@@ -1,0 +1,76 @@
+<!--
+  Generated template for the StorePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{store.name}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-input type="number" placeholder="Budget" [(ngModel)]="budget"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item class="total">
+          <ion-input readonly type="number" value=0 placeholder="total" [(ngModel)]="total" ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="vegetable-container" *ngFor="let veg of store.vegetables; let i = index">
+    <ion-grid>
+      <ion-row>
+        <ion-card>
+          <ion-card-header>
+              <ion-col>{{veg.name}}</ion-col>
+          </ion-card-header>
+          <ion-card-content>
+              <ion-row>
+                <ion-col>
+                  <ion-row radio-group >
+                    <ion-col >
+                      <ion-label>1/4</ion-label>
+                      <ion-radio value={{veg.price_1}} (ionSelect)="itemSelected(veg, veg.price_1, i)"></ion-radio>
+                    </ion-col>
+                    <ion-col>
+                      <ion-label>1/2</ion-label>
+                      <ion-radio value={{veg.price_2}} (ionSelect)="itemSelected(veg, veg.price_2, i)"></ion-radio>
+                    </ion-col>
+                    <ion-col>
+                      <ion-label>1</ion-label>
+                      <ion-radio value={{veg.price_3}} (ionSelect)="itemSelected(veg, veg.price_3, i)" ></ion-radio>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+                <ion-col>
+                    <ion-label>Total</ion-label>                    
+                    <ion-input readonly type="number" [(ngModel)]="itemPrice[i]"></ion-input>          
+                </ion-col>
+              </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button block ion-button color="primary" [disabled]="!checkBudget()" (click)="submit()">SUBMIT</button>
+      </ion-col>
+      <ion-col>
+        <button block ion-button color="primary">LOCATE</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

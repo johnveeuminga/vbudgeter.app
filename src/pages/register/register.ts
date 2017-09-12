@@ -29,17 +29,24 @@ export class RegisterPage {
   }
 
   register(){
-    this.auth.store(this.credentials).then( (res:any) => {
-      this.auth.setUser(this.credentials.email, res.insertId, this.credentials.name, this.credentials.username, this.credentials.address, this.credentials.contact, this.credentials.usertype)      
-      if(parseInt(this.credentials.usertype.toString()) === 1){
-        this.navCtrl.setRoot(SellerDashboardPage)
-        console.log('qweqweq')
-      }else if(parseInt(this.credentials.usertype.toString()) === 2){
-        this.navCtrl.setRoot(CustomerDashboardPage)
-      }
-    }).catch( err => {
-      console.log(err)
-    })
+    // this.auth.store(this.credentials).then( (res:any) => {
+    //   this.auth.setUser(this.credentials.email, res.insertId, this.credentials.name, this.credentials.username, this.credentials.address, this.credentials.contact, this.credentials.usertype)      
+    //   if(parseInt(this.credentials.usertype.toString()) === 1){
+    //     this.navCtrl.setRoot(SellerDashboardPage)
+    //     console.log('qweqweq')
+    //   }else if(parseInt(this.credentials.usertype.toString()) === 2){
+    //     this.navCtrl.setRoot(CustomerDashboardPage)
+    //   }
+    // }).catch( err => {
+    //   console.log(err)
+    // })
+    if(parseInt(this.credentials.usertype.toString()) === 1){
+      this.navCtrl.setRoot(SellerDashboardPage)
+      console.log('qweqweq')
+    }else if(parseInt(this.credentials.usertype.toString()) === 2){
+      this.navCtrl.setRoot(CustomerDashboardPage)
+    }
   }
+
 
 }

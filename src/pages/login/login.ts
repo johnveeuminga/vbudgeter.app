@@ -29,25 +29,26 @@ export class LoginPage {
   }
 
   login(){
-    this.auth.login(this.credentials).then((res:any) => {
-      console.log(res)
-      if(this.navParams.get('module') === 1){
-        if(res.usertype === 1){
-          this.goToSellerDashboard()
-        }else{
-          this.showAlert('', 'The credentials you entered seems to be existing but is not a seller. Please try again.', ['Dismiss'])
-        }
-      }else{
-        if(res.usertype === 2){
-          this.goToCustomerDashboard()
-        }else{
-          this.showAlert('', 'The credentials you entered seems to be existing but is not a customer. Please try again.', ['Dismiss'])
-        }
-      }
+    // this.auth.login(this.credentials).then((res:any) => {
+    //   console.log(res)
+    //   if(this.navParams.get('module') === 1){
+    //     if(res.usertype === 1){
+    //       this.goToSellerDashboard()
+    //     }else{
+    //       this.showAlert('', 'The credentials you entered seems to be existing but is not a seller. Please try again.', ['Dismiss'])
+    //     }
+    //   }else{
+    //     if(res.usertype === 2){
+    //       this.goToCustomerDashboard()
+    //     }else{
+    //       this.showAlert('', 'The credentials you entered seems to be existing but is not a customer. Please try again.', ['Dismiss'])
+    //     }
+    //   }
       
-    }).catch( err => {
-      this.showAlert("", err, ['Dismiss']);
-    })
+    // }).catch( err => {
+    //   this.showAlert("", err, ['Dismiss']);
+    // })
+    this.goToSellerDashboard();
   }
 
   showAlert(title, message, buttons){
