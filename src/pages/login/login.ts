@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+
 import { HomePage } from '../home/home'
+import { RegisterPage} from '../register/register'
 import { SellerDashboardPage } from '../seller-dashboard/seller-dashboard'
 import { CustomerDashboardPage } from '../customer-dashboard/customer-dashboard'
 import { AuthProvider } from '../../providers/auth/auth'
@@ -20,8 +22,11 @@ import { AuthProvider } from '../../providers/auth/auth'
 export class LoginPage {
 
   credentials = {username: '', password :''};
+  processing = false;
 
   constructor(private auth: AuthProvider, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+    this.processing = false;
+
   }
 
   ionViewDidLoad() {
@@ -29,26 +34,25 @@ export class LoginPage {
   }
 
   login(){
-    // this.auth.login(this.credentials).then((res:any) => {
-    //   console.log(res)
-    //   if(this.navParams.get('module') === 1){
-    //     if(res.usertype === 1){
-    //       this.goToSellerDashboard()
-    //     }else{
-    //       this.showAlert('', 'The credentials you entered seems to be existing but is not a seller. Please try again.', ['Dismiss'])
-    //     }
-    //   }else{
-    //     if(res.usertype === 2){
-    //       this.goToCustomerDashboard()
-    //     }else{
-    //       this.showAlert('', 'The credentials you entered seems to be existing but is not a customer. Please try again.', ['Dismiss'])
-    //     }
-    //   }
-      
-    // }).catch( err => {
-    //   this.showAlert("", err, ['Dismiss']);
-    // })
-    this.goToSellerDashboard();
+    this.processing = true;
+    this.auth.login(this.credentials)
+      .subscribe( data => {
+        let token = data.access_token
+        this.auth.getUser(data.access_token)
+          .subscribe( data => {
+            this.auth.setUser(data.email, data.id, data.name, data.username, data.address, data.contact, data.usertype, token)
+            if(data.usertype_id == 1){
+              this.goToSellerDashboard()
+            }else if(data.usertype_id == 2){
+              this.goToCustomerDashboard()
+            }
+          })
+      },
+      err => {
+        this.showAlert("", err.message, ['Dismiss'])
+      })
+      this.processing = false;
+
   }
 
   showAlert(title, message, buttons){
@@ -74,6 +78,10 @@ export class LoginPage {
 
   goToHome(){
     this.navCtrl.setRoot(HomePage)
+  }
+
+  goToRegister(){
+    this.navCtrl.push(RegisterPage)
   }
 
 }

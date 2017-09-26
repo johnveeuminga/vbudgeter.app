@@ -33,6 +33,7 @@ export class DatabaseProvider {
             this.databaseReady.next(true);
             console.log('ready')            
           }else{
+            console.log('fill')
             this.fillDatabase();
           }
         })

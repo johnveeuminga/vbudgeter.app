@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth'
 
-import { HomePage } from '../home/home'
+import { LoginPage } from '../login/login'
 
 import { OrdersComponent } from '../../components/orders/orders'
 /**
@@ -36,7 +36,7 @@ export class SellerDashboardPage {
         text: "Logout",
         handler: () => {
           this.auth.logout();
-          this.navCtrl.push(HomePage);
+          this.navCtrl.push(LoginPage);
         }
       }]
     })

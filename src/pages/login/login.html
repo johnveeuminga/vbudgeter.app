@@ -24,15 +24,20 @@
                 </ion-item>
   
                 <ion-item>
-                  <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password"></ion-input>
+                  <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" required></ion-input>
                 </ion-item>
               </ion-list>
   
-              <button ion-button block color="primary" type="submit" [disabled]="!registerForm.form.valid">Login</button>
+              <button ion-button block color="primary" type="submit" [disabled]="!registerForm.form.valid || processing">Login</button>
               <button ion-button block type="button" color="primary" (click)="goToHome()">Back</button>
             </ion-col>
           </ion-row>
         </form>
+        <ion-row padding-top>
+          <ion-col>
+           <p ion-text color="dark" text-center class="pt-5" (tap)="goToRegister()">New user? Click here to sign up</p>
+          </ion-col>
+        </ion-row>
     </ion-grid>
   </div>    
 </ion-content>

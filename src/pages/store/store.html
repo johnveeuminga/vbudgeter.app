@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{store.name}}</ion-title>
+    <ion-title>{{store.store_name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -29,6 +29,7 @@
   </ion-grid>
 
   <div class="vegetable-container" *ngFor="let veg of store.vegetables; let i = index">
+
     <ion-grid>
       <ion-row>
         <ion-card>
@@ -41,15 +42,15 @@
                   <ion-row radio-group >
                     <ion-col >
                       <ion-label>1/4</ion-label>
-                      <ion-radio value={{veg.price_1}} (ionSelect)="itemSelected(veg, veg.price_1, i)"></ion-radio>
+                      <ion-radio value={{veg.price1}} (ionSelect)="itemSelected(veg, veg.price1, i, 1)"></ion-radio>
                     </ion-col>
                     <ion-col>
                       <ion-label>1/2</ion-label>
-                      <ion-radio value={{veg.price_2}} (ionSelect)="itemSelected(veg, veg.price_2, i)"></ion-radio>
+                      <ion-radio value={{veg.price2}} (ionSelect)="itemSelected(veg, veg.price2, i, 2)"></ion-radio>
                     </ion-col>
                     <ion-col>
                       <ion-label>1</ion-label>
-                      <ion-radio value={{veg.price_3}} (ionSelect)="itemSelected(veg, veg.price_3, i)" ></ion-radio>
+                      <ion-radio value={{veg.price3}} (ionSelect)="itemSelected(veg, veg.price3, i, 3)" ></ion-radio>
                     </ion-col>
                   </ion-row>
                 </ion-col>

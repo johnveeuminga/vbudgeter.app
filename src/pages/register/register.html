@@ -22,31 +22,45 @@
                 <ion-item>
                   <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="credentials.email" required></ion-input>
                 </ion-item>
+                <p *ngIf="errors && errors.email" ion-text color="danger" margin-left>{{errors.email}}</p>
+      
+                <ion-item>
+                  <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="credentials.name" required></ion-input>
+                </ion-item>
+                <p *ngIf="errors && errors.name" ion-text color="danger" margin-left>{{errors.name}}</p>
       
                 <ion-item>
                   <ion-input type="text" placeholder="Username" name="username" [(ngModel)]="credentials.username" required></ion-input>
                 </ion-item>
+                <p *ngIf="errors && errors.username" ion-text color="danger" margin-left>{{errors.username}}</p>
   
                 <ion-item>
                   <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" required></ion-input>
                 </ion-item>
-
+                <p *ngIf="errors && errors.password" ion-text color="danger" margin-left>{{errors.password}}</p>
+  
                 <ion-item>
                   <ion-input type="address" placeholder="Address" name="address" [(ngModel)]="credentials.address" required></ion-input>
                 </ion-item>
+                <p *ngIf="errors && errors.address" ion-text color="danger" margin-left>{{errors.address}}</p>
 
                 <ion-item>
-                  <ion-input type="contact" placeholder="Contact Information" name="contact" [(ngModel)]="credentials.contact" required></ion-input>
+                  <ion-input type="contact" placeholder="Contact Information" name="contact" [(ngModel)]="credentials.contact_info" required></ion-input>
                 </ion-item>
+
+                <p *ngIf="errors && errors.contact_info" ion-text color="danger" margin-left>{{errors.contact_info}}</p>
 
                 <ion-item>
                     <ion-label>Usertype</ion-label>
-                    <ion-select name="usertype" [(ngModel)]="credentials.usertype">
+                    <ion-select name="usertype_id" [(ngModel)]="credentials.usertype_id">
                       <ion-option value=1 selected=true>Seller</ion-option>
                       <ion-option value=2>Customer</ion-option>
                     </ion-select>
                   </ion-item>
               </ion-list>
+
+                <p *ngIf="errors && errors.usertype_id" ion-text color="danger" margin-left>{{errors.usertype_id}}</p>
+
   
               <button ion-button block color="primary" type="submit">Sign Up</button>
             </ion-col>

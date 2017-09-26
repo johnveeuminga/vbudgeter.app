@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { DatabaseProvider } from '../database/database'
+import { RequestProvider } from '../request/request'
+import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 /*
@@ -18,7 +20,8 @@ import 'rxjs/add/operator/map';
     name: string;
     username: string;
     usertype: number;
-    constructor(email: string, id: number, name: string, username: string, address: string, contact: string, usertype:number){
+    access_token: any;
+    constructor(email: string, id: number, name: string, username: string, address: string, contact: string, usertype:number, access_token:any){
       this.id= id;
       this.name = name;
       this.username = username;
@@ -26,40 +29,46 @@ import 'rxjs/add/operator/map';
       this.address = address;
       this.contact = contact;
       this.usertype = usertype;
+      this.access_token = access_token
       
     }
   }
 @Injectable()
 export class AuthProvider {
 
-  currentUser: User;  
+  currentUser: User; 
+  appUrl: any;
 
-  constructor(private database: DatabaseProvider, public http: Http) {
+  constructor(private req: RequestProvider, private database: DatabaseProvider, public http: Http) {
+    this.appUrl = this.req.apiUrl + 'oauth/token';
   }
 
   public login(credentials){
-		return new Promise((resolve, reject) => {
-			if(credentials.username === null || credentials.password === null){
-				return reject("Please insert credentials.")
-			} else {
-				this.database.checkIfUsernameExist(credentials.username).then( res => {
-					if(res.length > 0){
-						if(res.item(0).password === credentials.password){
-							this.setUser(res.item(0).email, res.item(0).id, res.item(0).name, res.item(0).username, res.item(0).address, res.item(0).contact, res.item(0).usertype);
-							return resolve(this.currentUser);
-						}else{
-							return reject("Incorrrect password");
-						}
-					}else{
-						return reject("User does not exist.");
-					}
-				})
-			}
-		})	
+		let postData = {
+      grant_type: "password",
+      client_id: 1,
+      client_secret: 'vbudgeter',
+      username: credentials.username,
+      password: credentials.password,
+      scope: ""
+    }	
+
+    return this.req.performPost(this.appUrl, postData);
   }
   
-  public getUserInfo(): User{
-		return this.currentUser;
+  public getUser(token){
+		let url = this.req.apiUrl + 'api/user';
+
+    let headers = new Headers({
+      "Accept": 'application/json',
+       'Authorization':'Bearer '+token,
+    })
+
+    return this.http.get(url, {
+      headers: headers
+    }).map(res => res.json())
+    .catch((error:any) =>  Observable.throw(error.json() || 'Error'))
+
   }
   
   public store(data){
@@ -71,12 +80,16 @@ export class AuthProvider {
 
   }
 
-	public setUser(email: string, id:number, name: string, username: string, address: string, contact: string, usertype:number){
-		this.currentUser = new User(email, id, name, username, address, contact, usertype);
+	public setUser(email: string, id:number, name: string, username: string, address: string, contact: string, usertype:number, token:any){
+		this.currentUser = new User(email, id, name, username, address, contact, usertype,token);
 	}
 
 	public logout(){
 		this.currentUser = null;
 	}
+
+  public getUserInfo(){
+    return this.currentUser;
+  }
 
 }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { OrderProvider } from '../../providers/order/order'
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the OrdersComponent component.
@@ -13,11 +15,59 @@ import { Component } from '@angular/core';
 export class OrdersComponent {
 
   text: string;
-  orders = [{customer: {name: "customer sample"}, items: [{item:{name:"sample_item_1", price:10}, quantity: 2}, {item: {name:"sample_item_2", price: 20}, quantity: 3}]},
-  {customer: {name: "customer sample 2"}, items: [{item:{name:"sample_item_1", price:10}, quantity: 2}, {item: {name:"sample_item_2", price: 20}, quantity: 3}]}]
+  orders: any;
 
-  constructor() {
+  constructor(public alertCtrl: AlertController, public order: OrderProvider) {
     console.log(this.orders);
+    this.getOrders();
+    
+  }
+
+  getOrders(){
+    this.order.getOrders().subscribe( res => {
+      res.subscribe( res => {
+        console.log(res.orders);
+        this.orders = res.orders;
+      })
+    })
+  }
+
+  showActionAlert(vegetable){
+    this.showAlert("What do you want to do?", '', [{
+      'text': 'Delete',
+      handler: () => {
+        this.presentDeleteAlert(vegetable.id)
+      } 
+    }])
+  }
+
+  presentDeleteAlert(id){
+    this.showAlert('Delete User', '', [{
+      text: 'Cancel',
+      handler: () => {
+
+      }
+    },{
+      text: 'Delete',
+      handler: () => {
+        this.order.delete(id).subscribe( res => {
+          this.getOrders();
+        })
+      }
+    }])
+
+  }
+
+  showAlert(title, message, buttons){
+    let alert = this.alertCtrl.create({
+      title: title,
+      message: message,
+      buttons: buttons
+    });
+
+    alert.present();
+
+    
   }
 
 }

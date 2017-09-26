@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth'
+import { UserProvider } from '../../providers/user/user'
 import { SellerDashboardPage } from '../seller-dashboard/seller-dashboard'
 import { CustomerDashboardPage } from '../customer-dashboard/customer-dashboard'
 
@@ -19,9 +20,10 @@ import { CustomerDashboardPage } from '../customer-dashboard/customer-dashboard'
 })
 export class RegisterPage {
 
-  credentials = {email: '', username: '', name: '', password :'', address: '', contact: '', usertype: 1};
+  credentials = {email: '', username: '', name: '', password :'', address: '', contact_info: '', usertype_id: 1};
+  errors: any;
   
-  constructor(public auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private user: UserProvider, public auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
@@ -29,24 +31,29 @@ export class RegisterPage {
   }
 
   register(){
-    // this.auth.store(this.credentials).then( (res:any) => {
-    //   this.auth.setUser(this.credentials.email, res.insertId, this.credentials.name, this.credentials.username, this.credentials.address, this.credentials.contact, this.credentials.usertype)      
-    //   if(parseInt(this.credentials.usertype.toString()) === 1){
-    //     this.navCtrl.setRoot(SellerDashboardPage)
-    //     console.log('qweqweq')
-    //   }else if(parseInt(this.credentials.usertype.toString()) === 2){
-    //     this.navCtrl.setRoot(CustomerDashboardPage)
-    //   }
-    // }).catch( err => {
-    //   console.log(err)
-    // })
-    if(parseInt(this.credentials.usertype.toString()) === 1){
-      this.navCtrl.setRoot(SellerDashboardPage)
-      console.log('qweqweq')
-    }else if(parseInt(this.credentials.usertype.toString()) === 2){
-      this.navCtrl.setRoot(CustomerDashboardPage)
-    }
+    this.user.store(this.credentials)
+      .subscribe( data => {
+        this.auth.setUser(data.data.email, data.data.id, data.data.name, data.data.username, data.data.address, data.data.contact, data.data.usertype_id, "")
+        if(data.data.usertype_id == 1){
+          this.goToSellerDashboard()
+        }else if(data.data.usertype_id == 2){
+          this.goToCustomerDashboard()
+        }
+      }, err => {
+          this.errors = err.errors
+          console.log(this.errors)
+         
+      })
   }
+
+  goToSellerDashboard(){
+    this.navCtrl.setRoot(SellerDashboardPage)
+  }
+
+  goToCustomerDashboard(){
+    this.navCtrl.setRoot(CustomerDashboardPage)
+  }
+
 
 
 }

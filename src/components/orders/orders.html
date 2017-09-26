@@ -1,12 +1,13 @@
 <!-- Generated template for the OrdersComponent component -->
-<div>
-  <ion-card *ngFor="let order of orders">
-	<ion-card-header>
-		{{order.customer.name}}
+<div *ngIf = "orders&&orders.length>0">
+  <ion-card *ngFor="let order of orders" (press)="showActionAlert(order)">
+	<ion-card-header *ngIf="order">
+		{{order.user.name}}
+		<div float-right>Total: {{order.total}}</div>
 	</ion-card-header>
 	<ion-list>
 		<ion-item *ngFor="let item of order.items">
-			{{item.item.name}} <div float-right color="primary">Quantity: {{item.quantity}}</div>
+			<span  class="unit"*ngIf="item.price_index==2">1/2</span><span  class="unit"*ngIf="item.price_index==3">1</span><span  class="unit"*ngIf="item.price_index==1">1/4</span> {{item.vegetable.name}} <div float-right color="primary">Price: {{item.price}}</div>
 		</ion-item>
 	</ion-list>
   </ion-card>

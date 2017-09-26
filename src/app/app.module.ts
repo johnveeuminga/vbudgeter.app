@@ -25,6 +25,10 @@ import { IonicStorageModule } from '@ionic/storage';
 import { SQLiteMock } from '@ionic-native-mocks/sqlite'
 import { SQLitePorterMock } from '@ionic-native-mocks/sqlite-porter'
 import { AuthProvider } from '../providers/auth/auth';
+import { RequestProvider } from '../providers/request/request';
+import { UserProvider } from '../providers/user/user';
+import { StoreProvider } from '../providers/store/store';
+import { OrderProvider } from '../providers/order/order';
 
 @NgModule({
   declarations: [
@@ -64,7 +68,11 @@ import { AuthProvider } from '../providers/auth/auth';
     {provide: SQLitePorter, useClass: SQLitePorterMock },
     // SQLite,
     // SQLitePorter,
-    AuthProvider
+    AuthProvider,
+    RequestProvider,
+    UserProvider,
+    StoreProvider,
+    OrderProvider
   ]
 })
 export class AppModule {}
