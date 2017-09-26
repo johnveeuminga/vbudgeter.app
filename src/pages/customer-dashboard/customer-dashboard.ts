@@ -31,6 +31,7 @@ export class CustomerDashboardPage {
     this.user = this.auth.getUserInfo();
     this.storeCtrl.getAllStores()
       .subscribe( data => {
+        console.log(data.data)
         this.stores = data.data;
       })
   }
