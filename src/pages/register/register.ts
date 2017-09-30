@@ -33,7 +33,7 @@ export class RegisterPage {
   register(){
     this.user.store(this.credentials)
       .subscribe( data => {
-        this.auth.setUser(data.data.email, data.data.id, data.data.name, data.data.username, data.data.address, data.data.contact, data.data.usertype_id, "")
+        this.auth.setUser(data.data.email, data.data.id, data.data.name, data.data.username, data.data.address, data.data.contact, data.data.usertype_id, "", null)
         if(data.data.usertype_id == 1){
           this.goToSellerDashboard()
         }else if(data.data.usertype_id == 2){

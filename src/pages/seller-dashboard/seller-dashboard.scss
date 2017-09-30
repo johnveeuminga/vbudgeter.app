@@ -1,3 +1,67 @@
 page-seller-dashboard {
+	#map{
+		height: 300px;
+	}
+	.toolbar-md{
+		padding-bottom: 0;
+
+		.toolbar-content{
+			height:100%;
+
+			.segment{
+				height: 100%;
+			}
+		}
+	}
+
+	.veg-title-container{
+		width: 100%;
+		.veg-title{
+			vertical-align: center;
+			line-height: 10px;
+			text-transform: uppercase;
+			color: $primary-color;
+			font-weight: 700;
+			text-align: center;
+			width: 100%;
+		}
+	}
+
+	.veg-container{
+		border-top: 1px solid $primary-color;
+		border-bottom: 1px solid $primary-color;
+		padding: 10px;
+	}
+
+	.store-container{
+		text-align: center;
+		font-size: 35px;
+		font-weight: 700;
+		color: $primary-color;
+		margin-bottom: 15px;
+
+		.item-inner,
+		{
+			border-bottom-color: transparent !important;
+			box-shadow: none !important;
+		}
+
+		.text-input{
+			text-align:center;
+			font-weight: 700;
+			font-size: 28px;
+			color: $primary-color;
+		}
+
+		.button{
+			margin-bottom: 15px;
+		}
+	}
+
+	.unit{
+		font-weight: 700;
+	}
+
+
 
 }

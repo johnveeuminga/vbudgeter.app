@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-toolbar>
-     <ion-title>SellerDashboard</ion-title>
+     <ion-title>Welcome!</ion-title>
      <ion-buttons start>
         <button ion-button (click)="presentActionSheet()">
           <ion-icon name="more"></ion-icon>
@@ -14,10 +14,70 @@
       </ion-buttons>
   </ion-toolbar>
 
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="action">
+      <ion-segment-button value="orders">
+        Orders
+      </ion-segment-button>
+      <ion-segment-button value="store" (tap) ="storeView()">
+        Your Store
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 
 </ion-header>
 
 
 <ion-content padding>
-  <orders></orders>
+    <div [ngSwitch]="action">
+      <div *ngSwitchCase="'orders'" ng-selected="selected">
+        <orders></orders>
+      </div>
+      <div *ngIf = "store">
+        <div *ngSwitchCase="'store'">
+            <div class="store-container">
+              <ion-item>
+                <ion-input type="text" placeholder="Store Name" [(ngModel)]="store.store_name" (ionFocus)="titleFocus($event)" (ionBlur)="titleBlur($event)"></ion-input>
+              </ion-item>
+              <div>
+                <button ion-button color="primary"  (click)="goToLocation()" *ngIf="store.latitude && store.longitude">VIEW LOCATION</button>
+                <button ion-button color="primary"  (click)="goToLocation()" *ngIf="!store.latitude && !store.longitude">ADD LOCATION</button>
+                <button ion-button color="primary" [disabled]="oldTitle===store.store_name" (click)="submit()">Save</button>
+              </div>
+            </div>
+            <div class="veg-container">
+              <div class=" d-flex align-items-center">
+                <div class="veg-title-container d-flex align-items-center">
+                  <span class="veg-title">Vegetables</span>
+                </div>
+                <button ion-button color="primary" (click)="openAddModal()" float-right>NEW</button>
+              </div>
+              <div margin-top>
+                <ion-card *ngFor="let veg of store.vegetables" (press)="showVegAction(veg)">
+                
+                  <ion-card-header>
+                    <span class="unit">{{veg.name}}</span>
+                     <div float-right> <span class="unit">Stock: </span> {{veg.avail_stock}} kg</div>
+
+                  </ion-card-header>
+                
+                  <ion-card-content>
+                    <ion-item>
+                      <span class="unit">1/4 Price:</span> Php{{veg.price1}}
+                    </ion-item>
+                    <ion-item>
+                      <span class="unit">1/2 Price:</span> Php{{veg.price2}}
+                    </ion-item>
+                    <ion-item>
+                    <span class="unit">1-whole Price:</span> Php{{veg.price3}}
+                    </ion-item>
+                  </ion-card-content>
+                </ion-card>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
 </ion-content>

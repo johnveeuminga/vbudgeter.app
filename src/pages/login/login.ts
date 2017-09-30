@@ -40,10 +40,11 @@ export class LoginPage {
         let token = data.access_token
         this.auth.getUser(data.access_token)
           .subscribe( data => {
-            this.auth.setUser(data.email, data.id, data.name, data.username, data.address, data.contact, data.usertype, token)
-            if(data.usertype_id == 1){
+            console.log(data);
+            this.auth.setUser(data.user.email, data.user.id, data.user.name, data.user.username, data.user.address, data.user.contact, data.user.usertype, token, data.store);
+            if(data.user.usertype_id == 1){
               this.goToSellerDashboard()
-            }else if(data.usertype_id == 2){
+            }else if(data.user.usertype_id == 2){
               this.goToCustomerDashboard()
             }
           })

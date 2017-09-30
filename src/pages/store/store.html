@@ -28,36 +28,35 @@
     </ion-row>
   </ion-grid>
 
-  <div class="vegetable-container" *ngFor="let veg of store.vegetables; let i = index">
+  <div *ngFor="let veg of store.vegetables; let i = index" class="vegetable-container">
 
     <ion-grid>
       <ion-row>
         <ion-card>
           <ion-card-header>
               <ion-col>{{veg.name}}</ion-col>
+              <div float-right>Total: {{itemPrice[i]}}</div>
+
           </ion-card-header>
           <ion-card-content>
               <ion-row>
                 <ion-col>
-                  <ion-row radio-group >
-                    <ion-col >
-                      <ion-label>1/4</ion-label>
-                      <ion-radio value={{veg.price1}} (ionSelect)="itemSelected(veg, veg.price1, i, 1)"></ion-radio>
-                    </ion-col>
-                    <ion-col>
-                      <ion-label>1/2</ion-label>
-                      <ion-radio value={{veg.price2}} (ionSelect)="itemSelected(veg, veg.price2, i, 2)"></ion-radio>
-                    </ion-col>
-                    <ion-col>
-                      <ion-label>1</ion-label>
-                      <ion-radio value={{veg.price3}} (ionSelect)="itemSelected(veg, veg.price3, i, 3)" ></ion-radio>
-                    </ion-col>
-                  </ion-row>
+                  <span class="unit">Stock: </span> {{veg.avail_stock}} kg
+                  <ion-item>
+                    <ion-label>Measurement</ion-label>
+                    <ion-select [(ngModel)]="selectModel[i]">
+                      <ion-option value="1/2"  *ngIf="veg.avail_stock>=.25" (ionSelect)="itemSelected(veg, veg.price1, i, 1)">1/4</ion-option>
+                      <ion-option value="1/4"  *ngIf="veg.avail_stock>=.50" (ionSelect)="itemSelected(veg, veg.price2, i, 2)">1/2</ion-option>
+                      <ion-option value="1-whole"  *ngIf="veg.avail_stock>=1" (ionSelect)="itemSelected(veg, veg.price3, i, 3)">1-whole</ion-option>
+                    </ion-select>
+                  </ion-item>
+                  <ion-item [hidden]="!selectModel[i]">
+                    <ion-label>Quantity: </ion-label>
+                    <ion-input type="number" step=1 [(ngModel)]="qty[i]" (ionChange)="validateQty(i, veg)" min=1></ion-input>
+                  </ion-item>
+                  <p ion-text color="danger" *ngIf="(errors[i])">{{errors[i]}}</p>
                 </ion-col>
-                <ion-col>
-                    <ion-label>Total</ion-label>                    
-                    <ion-input readonly type="number" [(ngModel)]="itemPrice[i]"></ion-input>          
-                </ion-col>
+                
               </ion-row>
           </ion-card-content>
         </ion-card>
@@ -70,7 +69,7 @@
         <button block ion-button color="primary" [disabled]="!checkBudget()" (click)="submit()">SUBMIT</button>
       </ion-col>
       <ion-col>
-        <button block ion-button color="primary">LOCATE</button>
+        <button block ion-button color="primary" [disabled]="!store.latitude || !store.longitude" (click)="goToLocatePage() || !errors.length<=0 ">LOCATE</button>
       </ion-col>
     </ion-row>
   </ion-grid>

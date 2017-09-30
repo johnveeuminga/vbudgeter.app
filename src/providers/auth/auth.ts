@@ -21,7 +21,8 @@ import 'rxjs/add/operator/map';
     username: string;
     usertype: number;
     access_token: any;
-    constructor(email: string, id: number, name: string, username: string, address: string, contact: string, usertype:number, access_token:any){
+    store:any;
+    constructor(email: string, id: number, name: string, username: string, address: string, contact: string, usertype:number, access_token:any, store=null){
       this.id= id;
       this.name = name;
       this.username = username;
@@ -30,6 +31,7 @@ import 'rxjs/add/operator/map';
       this.contact = contact;
       this.usertype = usertype;
       this.access_token = access_token
+      this.store=store
       
     }
   }
@@ -80,8 +82,15 @@ export class AuthProvider {
 
   }
 
-	public setUser(email: string, id:number, name: string, username: string, address: string, contact: string, usertype:number, token:any){
-		this.currentUser = new User(email, id, name, username, address, contact, usertype,token);
+	public setUser(email: string, id:number, name: string, username: string, address: string, contact: string, usertype:number, token:any, store:any){
+		this.currentUser = new User(email, id, name, username, address, contact, usertype,token, store);
+    if(this.currentUser.usertype == 1){
+      this.req.performGet(this.req.apiUrl+'/users/'+id+'/getStore').subscribe( res => {
+        this.currentUser.store = res;
+        console.log(this.currentUser);
+      })
+    }
+
 	}
 
 	public logout(){

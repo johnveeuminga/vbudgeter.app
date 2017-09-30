@@ -13,6 +13,12 @@ import { SellerDashboardPage } from '../pages/seller-dashboard/seller-dashboard'
 import { CustomerDashboardPage } from '../pages/customer-dashboard/customer-dashboard'
 import { StorePage } from '../pages/store/store'
 import { ThankyouPage }from '../pages/thankyou/thankyou'
+import { AddVegetablePage }from '../pages/add-vegetable/add-vegetable'
+import { EditVegetablePage }from '../pages/edit-vegetable/edit-vegetable'
+import { LocatePage }from '../pages/locate/locate'
+import { DirectionsPage }from '../pages/directions/directions'
+import { LocationPage } from '../pages/location/location'
+import { RestockPage } from '../pages/restock/restock'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,11 +30,14 @@ import { IonicStorageModule } from '@ionic/storage';
 //mocks
 import { SQLiteMock } from '@ionic-native-mocks/sqlite'
 import { SQLitePorterMock } from '@ionic-native-mocks/sqlite-porter'
+import { Geolocation } from '@ionic-native/geolocation'
+
 import { AuthProvider } from '../providers/auth/auth';
 import { RequestProvider } from '../providers/request/request';
 import { UserProvider } from '../providers/user/user';
 import { StoreProvider } from '../providers/store/store';
 import { OrderProvider } from '../providers/order/order';
+import { VegetableProvider } from '../providers/vegetable/vegetable';
 
 @NgModule({
   declarations: [
@@ -40,7 +49,13 @@ import { OrderProvider } from '../providers/order/order';
     CustomerDashboardPage,
     OrdersComponent,
     StorePage,
-    ThankyouPage
+    ThankyouPage,
+    AddVegetablePage,
+    EditVegetablePage,
+    LocatePage,
+    DirectionsPage,
+    LocationPage,
+    RestockPage
   ],
   imports: [
     BrowserModule,
@@ -57,7 +72,13 @@ import { OrderProvider } from '../providers/order/order';
     SellerDashboardPage,
     CustomerDashboardPage,
     StorePage,
-    ThankyouPage
+    ThankyouPage,
+    AddVegetablePage,
+    EditVegetablePage,
+    LocatePage,
+    DirectionsPage,
+    LocationPage,
+    RestockPage
   ],
   providers: [
     StatusBar,
@@ -72,7 +93,9 @@ import { OrderProvider } from '../providers/order/order';
     RequestProvider,
     UserProvider,
     StoreProvider,
-    OrderProvider
+    OrderProvider,
+    VegetableProvider,
+    Geolocation
   ]
 })
 export class AppModule {}

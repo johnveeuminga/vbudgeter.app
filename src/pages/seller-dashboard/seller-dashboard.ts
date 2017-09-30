@@ -1,7 +1,13 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, ActionSheetController, AlertController, ModalController} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth'
-
+import { StoreProvider } from '../../providers/store/store'
+import { VegetableProvider } from '../../providers/vegetable/vegetable'
+import { Geolocation } from '@ionic-native/geolocation'
+import { AddVegetablePage } from '../add-vegetable/add-vegetable'
+import { EditVegetablePage } from '../edit-vegetable/edit-vegetable'
+import { LocationPage } from '../location/location'
+import { RestockPage } from '../restock/restock'
 import { LoginPage } from '../login/login'
 
 import { OrdersComponent } from '../../components/orders/orders'
@@ -11,6 +17,7 @@ import { OrdersComponent } from '../../components/orders/orders'
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
+declare var google;
 
 @IonicPage()
 @Component({
@@ -18,14 +25,37 @@ import { OrdersComponent } from '../../components/orders/orders'
   templateUrl: 'seller-dashboard.html',
 })
 export class SellerDashboardPage {
-
+  map:any;
   user: any;
-  constructor(private actionSheetCtrl: ActionSheetController, private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
+  action:any;
+  store:any;
+  oldTitle: string;
+  titleFocused = false;
+  storeMarker: any;
+  storeLoc: any;
+  constructor(private loc: Geolocation, private modalCtrl: ModalController, private veg: VegetableProvider, private alert: AlertController, private storeCtrl: StoreProvider, private actionSheetCtrl: ActionSheetController, private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.user = this.auth.getUserInfo();
+    if(this.navParams.get("action")){
+      this.action = 'store'
+    }else{
+      this.action = 'orders'
+    }
+    if(this.navParams.get('action')){
+      this.storeCtrl.getSellerStore(this.user.id).subscribe( res => {
+        this.store = res;  
+        this.oldTitle = this.store.store_name;
+        console.log(this.store);
+      });
+    }else{
+      this.store = this.user.store;
+      this.oldTitle = this.store.store_name;
+    }
+    
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SellerDashboardPage');
+
   }
 
   presentActionSheet(){
@@ -43,5 +73,114 @@ export class SellerDashboardPage {
 
     actionSheet.present();
   }
+
+  showVegAction(veg){
+    this.showAlert("What do you want to do?", "", [
+    {
+      text: 'EDIT',
+      handler: () => {
+        this.openEditModal(veg);
+      }
+    },
+    {
+      text: 'RESTOCK',
+      handler: () => {
+        this.openRestockModal(veg);
+      }
+    },
+    {
+      text: 'DELETE',
+      handler: () => {
+        this.showAlert("DELETE VEGETABLE?", "This process is irreversible", [
+        {
+           text: 'DELETE',
+           handler: () => {
+             this.veg.delete(veg.id).subscribe( () => {
+               this.storeCtrl.getSellerStore(this.user.id).subscribe( res => {
+                 this.store = res;  
+                 this.oldTitle = this.store.store_name;
+               })
+             })  
+           }
+        },
+        {
+          text: 'CANCEL',
+          handler: () => {
+
+          }
+        }])
+      }
+    }])
+  }
+
+  showAlert(title, message, buttons){
+    let alert = this.alert.create({
+      title: title,
+      message: message,
+      buttons: buttons
+    });
+
+    alert.present();
+
+    
+  }
+
+  openAddModal(){
+    let store = this.store
+    let modal = this.modalCtrl.create(AddVegetablePage, {store});
+    modal.present();
+  }
+
+  openEditModal(veg){
+    let store = this.store
+    let modal = this.modalCtrl.create(EditVegetablePage, {store, veg});
+    modal.present();
+  }
+
+  openRestockModal(veg){
+    let store = this.store
+    let modal = this.modalCtrl.create(RestockPage, {store, veg});
+    modal.present();
+  }
+
+  checkIfChanged(){
+    if(this.oldTitle === this.store.store_name){
+      console.log(true);
+    }
+  }
+
+  submit(){
+    let store_name = this.store.store_name;
+    let data = {'store_name': store_name}
+
+    this.storeCtrl.edit(data, this.store.id).subscribe(res => {
+      this.store = res.store;
+      this.oldTitle = this.store.store_name
+      console.log(res.store)
+    })
+  }
+
+  titleFocus(event){
+    this.titleFocused = true;
+  }
+
+  titleBlur(event){
+    this.titleFocused = false;
+
+  }
+
+  titleChange(){
+    return false;
+  }
+
+  storeView(){
+
+  }
+
+  goToLocation(){
+    let store = this.store;
+    this.navCtrl.push(LocationPage, {store})
+  }
+
 
 }

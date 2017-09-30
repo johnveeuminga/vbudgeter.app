@@ -6,6 +6,7 @@ import { LoginPage } from '../pages/login/login';
 import { SellerDashboardPage } from '../pages/seller-dashboard/seller-dashboard';
 import { CustomerDashboardPage } from '../pages/customer-dashboard/customer-dashboard';
 import { ThankyouPage }  from '../pages/thankyou/thankyou'
+import { LocatePage } from '../pages/locate/locate'
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 

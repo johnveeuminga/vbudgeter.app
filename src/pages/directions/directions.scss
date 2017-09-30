@@ -1,0 +1,10 @@
+page-directions {
+    #map{
+        height: 400px;
+    }
+
+    .selected-place-container{
+		border: 2px solid $primary-color;
+		padding: 10px;
+	}
+}

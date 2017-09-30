@@ -17,8 +17,24 @@ export class StoreProvider {
   	this.url = this.req.apiUrl + 'api/stores'
   }
 
+  edit(data, id){
+  	return this.req.performPut(this.url+'/'+id, data);
+  }
+
+  delete(id){
+    return this.req.performDelete(this.url+'/'+id);
+  }
+
   getAllStores(){
   	return this.req.performGet(this.url);
+  }
+
+  getSellerStore(id){
+  	return this.req.performGet(this.req.apiUrl + 'api/users/'+id+'/getStore')
+  }
+
+  setLocation(id, data){
+    return this.req.performPut(this.url+'/'+id+'/setLocation', data);
   }
 
 }

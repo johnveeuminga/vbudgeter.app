@@ -40,7 +40,6 @@ getUserWithStore():Observable<any>{
 
 getOrders(): Observable<any>{
 	return this.getUserWithStore().map( res => {
-		console.log(res);
     	let url = this.req.apiUrl + 'api/stores/'+res.data.store.id+'/orders'
 
     	console.log(url);

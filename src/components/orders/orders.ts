@@ -24,6 +24,7 @@ export class OrdersComponent {
   }
 
   getOrders(){
+    if(this.order)
     this.order.getOrders().subscribe( res => {
       res.subscribe( res => {
         console.log(res.orders);
