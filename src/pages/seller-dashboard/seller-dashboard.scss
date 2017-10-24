@@ -49,6 +49,10 @@ page-seller-dashboard {
 		.text-input{
 			text-align:center;
 			font-weight: 700;
+
+		}
+
+		.store-title .text-input{
 			font-size: 28px;
 			color: $primary-color;
 		}
@@ -60,6 +64,20 @@ page-seller-dashboard {
 
 	.unit{
 		font-weight: 700;
+	}
+
+	.top{
+		bottom: 10px;
+		right: 20px;
+		z-index: 9999;
+		border-radius: 50%;
+		color: white;
+		position: fixed;
+		font-size: 16px;
+		font-weight: 700;
+		width: 56px;
+		height: 56px;
+		-webkit-backface-visibility: hidden;
 	}
 
 

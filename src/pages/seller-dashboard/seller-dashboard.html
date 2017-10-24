@@ -29,21 +29,28 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding scroll="true">
     <div [ngSwitch]="action">
       <div *ngSwitchCase="'orders'" ng-selected="selected">
+        <button class="top" ion-button color="primary" (click)="scrollToTop()"><ion-icon name="arrow-up"></ion-icon></button>
         <orders></orders>
       </div>
       <div *ngIf = "store">
+        
         <div *ngSwitchCase="'store'">
+          
             <div class="store-container">
               <ion-item>
-                <ion-input type="text" placeholder="Store Name" [(ngModel)]="store.store_name" (ionFocus)="titleFocus($event)" (ionBlur)="titleBlur($event)"></ion-input>
+                <ion-input type="text" placeholder="Store Name" [(ngModel)]="store.store_name" (ionFocus)="titleFocus($event)" (ionBlur)="titleBlur($event)" class="store-title"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input type="text" placeholder="Store Description" [(ngModel)]="store.store_desc" (ionFocus)="descFocus($event)" (ionBlur)="descBlur($event)" class="store-desc"></ion-input>
               </ion-item>
               <div>
                 <button ion-button color="primary"  (click)="goToLocation()" *ngIf="store.latitude && store.longitude">VIEW LOCATION</button>
                 <button ion-button color="primary"  (click)="goToLocation()" *ngIf="!store.latitude && !store.longitude">ADD LOCATION</button>
-                <button ion-button color="primary" [disabled]="oldTitle===store.store_name" (click)="submit()">Save</button>
+                <button ion-button color="primary" [disabled]="oldTitle===store.store_name&&oldDesc===store.store_desc" (click)="submit()">Save</button>
               </div>
             </div>
             <div class="veg-container">
@@ -81,3 +88,5 @@
     </div>
 
 </ion-content>
+
+<button class="top" ion-button color="primary" (click)="scrollToTop()"><ion-icon name="arrow-up"></ion-icon></button>

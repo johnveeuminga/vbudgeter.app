@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, AlertController, ModalController} from 'ionic-angular';
+import { Content, IonicPage, NavController, NavParams, ActionSheetController, AlertController, ModalController} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth'
 import { StoreProvider } from '../../providers/store/store'
 import { VegetableProvider } from '../../providers/vegetable/vegetable'
@@ -25,6 +25,7 @@ declare var google;
   templateUrl: 'seller-dashboard.html',
 })
 export class SellerDashboardPage {
+  @ViewChild(Content) content: Content;
   map:any;
   user: any;
   action:any;
@@ -33,7 +34,14 @@ export class SellerDashboardPage {
   titleFocused = false;
   storeMarker: any;
   storeLoc: any;
-  constructor(private loc: Geolocation, private modalCtrl: ModalController, private veg: VegetableProvider, private alert: AlertController, private storeCtrl: StoreProvider, private actionSheetCtrl: ActionSheetController, private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
+  oldDesc:any;
+  descFocused = false;
+
+  ionScroll;
+  showButton = false;
+  contentData = [];
+
+  constructor(private myElement: ElementRef, private loc: Geolocation, private modalCtrl: ModalController, private veg: VegetableProvider, private alert: AlertController, private storeCtrl: StoreProvider, private actionSheetCtrl: ActionSheetController, private auth: AuthProvider, public navCtrl: NavController, public navParams: NavParams) {
     this.user = this.auth.getUserInfo();
     if(this.navParams.get("action")){
       this.action = 'store'
@@ -44,17 +52,18 @@ export class SellerDashboardPage {
       this.storeCtrl.getSellerStore(this.user.id).subscribe( res => {
         this.store = res;  
         this.oldTitle = this.store.store_name;
+        this.oldDesc = this.store.store_desc;
         console.log(this.store);
       });
     }else{
       this.store = this.user.store;
       this.oldTitle = this.store.store_name;
-    }
-    
+    }    
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SellerDashboardPage');
+
 
   }
 
@@ -151,7 +160,8 @@ export class SellerDashboardPage {
 
   submit(){
     let store_name = this.store.store_name;
-    let data = {'store_name': store_name}
+    let store_desc = this.store.store_desc;
+    let data = {'store_name': store_name, 'store_desc': store_desc}
 
     this.storeCtrl.edit(data, this.store.id).subscribe(res => {
       this.store = res.store;
@@ -169,6 +179,15 @@ export class SellerDashboardPage {
 
   }
 
+  descFocus(event){
+    this.descFocused = true;
+  }
+
+  descBlur(event){
+    this.descFocused = false;
+
+  }
+
   titleChange(){
     return false;
   }
@@ -180,6 +199,10 @@ export class SellerDashboardPage {
   goToLocation(){
     let store = this.store;
     this.navCtrl.push(LocationPage, {store})
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop();
   }
 
 
